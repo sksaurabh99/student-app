@@ -48,10 +48,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ App deployed successfully! Visit: http://${SERVER_IP}:8080/"
+            echo " App deployed successfully! Visit: http://${SERVER_IP}:8080/"
         }
         failure {
-            echo "❌ Deployment failed."
+            echo " Deployment failed."
         }
     }
 }
