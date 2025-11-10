@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven_3.9.9' // 👈 configure this in Jenkins → Manage Jenkins → Tools → Maven
-    }
-
     environment {
         SERVER_IP    = '18.142.54.107'
         SSH_CRED_ID  = 'meven-node-java'
@@ -21,8 +17,13 @@ pipeline {
 
         stage('Build WAR') {
             steps {
-                echo "Building WAR file..."
-                sh 'mvn clean package -DskipTests'
+                sh '''
+                    echo "Installing Maven..."
+                    sudo apt update -y
+                    sudo apt install -y maven
+                    mvn -version
+                    mvn clean package -DskipTests
+                '''
             }
         }
 
@@ -38,7 +39,6 @@ pipeline {
                             sudo mv /tmp/*.war ${TOMCAT_PATH}/ROOT.war
                             sudo chown tomcat:tomcat ${TOMCAT_PATH}/ROOT.war
                             sudo systemctl restart ${TOMCAT_SVC}
-                            echo "Tomcat restarted successfully!"
                         '
                     """
                 }
@@ -48,11 +48,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ App deployed successfully!"
-            echo "🌐 Visit: http://${SERVER_IP}:8080/"
+            echo "✅ App deployed successfully! Visit: http://${SERVER_IP}:8080/"
         }
         failure {
-            echo "❌ Deployment failed. Check console logs."
+            echo "❌ Deployment failed."
         }
     }
 }
