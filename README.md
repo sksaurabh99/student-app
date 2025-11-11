@@ -1,4 +1,4 @@
-# 🎓 Student Management System
+# Java Web App – CI/CD Deployment using Jenkins, Maven & Tomcat (AWS EC2)
 
 A Java-based **web application** for managing student records, built with **Maven** and deployed automatically to a remote **Tomcat server** using **Jenkins CI/CD**.
 
